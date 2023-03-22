@@ -11,7 +11,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import EntryContext from '../context/entries/entryContext';
 
 export default function Create() {
-    const { entries, createEntry } = useContext(EntryContext)
+    const { createEntry } = useContext(EntryContext)
 
     const [open, setOpen] = useState(false);
 

@@ -10,12 +10,15 @@ const Home = () => {
     const { entries, getEntries } = useContext(EntryContext)
 
     useEffect(() => {
-        const fillEntries = async () => {
-            await getEntries()
+        try {
+            const fillEntries = async () => {
+                await getEntries()
+            }
+            fillEntries()
+        } catch (error) {
+            // @TODO Alert
+            console.log(error.message)
         }
-
-        fillEntries()
-        console.log('Use Effect is called')
     }, [])
 
     return (
