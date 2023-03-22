@@ -3,6 +3,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import Button from '@mui/material/Button';
 
 import EntryContext from '../context/entries/entryContext';
+import AlertContext from '../context/alerts/alertContext';
 
 import Create from './Create'
 import Read from './Read';
@@ -11,6 +12,7 @@ import { Box, Stack, Typography } from '@mui/material';
 
 export default function Home() {
     const { getEntries, updateEntry, sendMail } = useContext(EntryContext)
+    const { setAlertState } = useContext(AlertContext)
 
     const [open, setOpen] = useState(false);
 
@@ -29,8 +31,7 @@ export default function Home() {
             }
             fillEntries()
         } catch (error) {
-            // @TODO Alert
-            console.log(error.message)
+            
         }
     }, [getEntries])
 
@@ -60,9 +61,17 @@ export default function Home() {
 
         try {
             updateEntry(id, editEntry)
+            setAlertState({
+                openAlert: true,
+                severity: "success",
+                alertText: "Updated Successfully"
+            })
         } catch (error) {
-            // @TODO Add an alert
-            console.log(error.message)
+            setAlertState({
+                openAlert: true,
+                severity: "error",
+                alertText: error.message
+            })
         }
 
         handleClose()        
@@ -84,8 +93,17 @@ export default function Home() {
     const handleSendMail = () => {
         try {
             sendMail(selectedIds)
+            setAlertState({
+                openAlert: true,
+                severity: "success",
+                alertText: "Email sent successfully!"
+            })
         } catch (error) {
-            
+            setAlertState({
+                openAlert: true,
+                severity: "error",
+                alertText: error.message
+            })
         }
     }
 

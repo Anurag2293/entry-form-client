@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -9,10 +10,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import EntryContext from '../context/entries/entryContext';
-import { Typography } from '@mui/material';
+import AlertContext from '../context/alerts/alertContext';
 
 export default function Create() {
     const { createEntry } = useContext(EntryContext)
+    const { setAlertState } = useContext(AlertContext)
 
     const [open, setOpen] = useState(false);
 
@@ -47,8 +49,11 @@ export default function Create() {
             setEmail("")
             setHobbies("")
         } catch (error) {
-            // @TODO Add an alert
-            console.log(error.message)
+            setAlertState({
+                openAlert: true,
+                severity: "error",
+                alertText: error.message
+            })
         }
 
         handleClose()        
