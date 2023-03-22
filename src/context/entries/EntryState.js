@@ -42,11 +42,7 @@ const EntryState = (props) => {
                 throw new Error(message)
             }
 
-            if (entries.length === 0) {
-                setEntries(createdEntry)
-            } else {
-                setEntries(entries.concat(createdEntry))
-            }
+            setEntries(entries.concat(createdEntry))
         } catch (error) {
             throw new Error(error.message)
         }
@@ -54,6 +50,7 @@ const EntryState = (props) => {
     
     const updateEntry = async (id, editEntry) => {
         try {
+            const { name, phoneNumber, email, hobbies } = editEntry
             const response = await fetch(`${host}/api/updateentry`, {
                 method: "PUT",
                 headers: {
@@ -63,13 +60,20 @@ const EntryState = (props) => {
                 body: JSON.stringify({id, ...editEntry})
             })
 
-            const { success, message, updatedEntry} = await response.json()
+            const { success, message } = await response.json()
 
             if (!success) {
                 throw new Error(message)
             }
 
-            getEntries()
+            const newEntries = entries.map((entry) => {
+                if (entry._id === id) {
+                    return {...entry, name, phoneNumber, email, hobbies }
+                }
+                return entry
+            })
+
+            setEntries(newEntries)
         } catch (error) {
             throw new Error(error.message)
         }
@@ -86,20 +90,45 @@ const EntryState = (props) => {
                 body: JSON.stringify({id})
             })
 
-            const { success, message, deletedEntry} = await response.json()
+            const { success, message } = await response.json()
 
             if (!success) {
                 throw new Error(message)
             }
 
-            getEntries()
+            const newEntries = entries.filter((entry) => { return entry._id !== id });
+            setEntries(newEntries);
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+    const sendMail = async (selectedIds) => {
+        try {
+            const response = await fetch(`${host}/api/sendmail`, {
+                method: 'POST',
+                headers: {
+                    'mode': 'no-cors',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(selectedIds)
+            })
+
+            const { success, message } = await response.json()
+
+            if (!success) {
+                throw new Error(message)
+            }
+
+            // @TODO Success Alert
+            console.log(message)
         } catch (error) {
             throw new Error(error.message)
         }
     }
 
     return (
-        <EntryContext.Provider value={{ entries, getEntries, createEntry, updateEntry, deleteEntry }}>
+        <EntryContext.Provider value={{ entries, getEntries, createEntry, updateEntry, deleteEntry, sendMail }}>
             {props.children}
         </EntryContext.Provider>
     )

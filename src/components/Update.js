@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -7,75 +7,22 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { Stack } from '@mui/material';
 
-import EntryContext from '../context/entries/entryContext';
-import { Typography } from '@mui/material';
-
-export default function Create() {
-    const { createEntry } = useContext(EntryContext)
-
-    const [open, setOpen] = useState(false);
-
-    const [name, setName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [email, setEmail] = useState("");
-    const [hobbies, setHobbies] = useState("");
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        const newEntry = {
-            name,
-            phoneNumber,
-            email,
-            hobbies
-        };
-
-        try {
-            createEntry(newEntry)
-
-            setName("")
-            setPhoneNumber("")
-            setEmail("")
-            setHobbies("")
-        } catch (error) {
-            // @TODO Add an alert
-            console.log(error.message)
-        }
-
-        handleClose()        
-    };
+const Update = (props) => {
+    const { open, handleClose, handleSubmit, name, phoneNumber, email, hobbies, setName, setPhoneNumber, setEmail, setHobbies } = props
 
     return (
-        <Box>
-            <Typography sx={{ fontSize: '3rem'}}>
-            CLICK TO ADD AN ENTRY TO OUR TABLE  
-                <Button variant="contained" onClick={handleClickOpen} sx={{
-                    width: '5rem',
-                    height: '5rem',
-                    borderRadius: '5rem',
-                    fontSize: '2rem',
-                    marginX: '1rem'
-                }}>
-                    +
-                </Button>
-            </Typography>
-            
+        <>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Create Entry</DialogTitle>
+                <DialogTitle>Update Entry</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Fill in the details and click Add to create an entry
+                        Edit your entry here
                     </DialogContentText>
                     <form onSubmit={handleSubmit} className="form-container">
+                        <Stack>
+
                         <Box className="form-item">
                             <TextField
                                 className="form-item"
@@ -116,13 +63,16 @@ export default function Create() {
                             />
                         </Box>
                         <Box className="form-item">
-                            <Button className="form-button" type="submit" variant="contained" color="primary" sx={{ paddingX: '4rem', paddingY: '0.5rem', fontSize:'1rem'}}>
-                                ADD ENTRY
+                            <Button className="form-button" type="submit" variant="contained" color="primary" sx={{ paddingX: '5rem', paddingY: '0.5rem', fontSize:'1rem'}}>
+                                UPDATE
                             </Button>
                         </Box>
+                        </Stack>
                     </form>
                 </DialogContent>
             </Dialog>
-        </Box>
-    );
+        </>
+    )
 }
+
+export default Update
