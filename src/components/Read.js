@@ -19,7 +19,7 @@ const Read = (props) => {
 
     return (
         <>
-            <TableContainer component={Paper} sx={{width: '70%'}}>
+            <TableContainer component={Paper} sx={{width: '100%'}}>
                 <Table sx={{ width: '100%'}} aria-label="simple table">
                     <TableHead>
                         <TableRow>

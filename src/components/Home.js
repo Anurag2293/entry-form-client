@@ -7,8 +7,9 @@ import EntryContext from '../context/entries/entryContext';
 import Create from './Create'
 import Read from './Read';
 import Update from './Update';
+import { Box, Stack, Typography } from '@mui/material';
 
-export default function Main() {
+export default function Home() {
     const { getEntries, updateEntry, sendMail } = useContext(EntryContext)
 
     const [open, setOpen] = useState(false);
@@ -31,7 +32,7 @@ export default function Main() {
             // @TODO Alert
             console.log(error.message)
         }
-    }, [])
+    }, [getEntries])
 
     const openUpdateModal = (entry) => {
         setOpen(true);
@@ -80,29 +81,64 @@ export default function Main() {
         }
     }
 
-    return (
-        <>
-            <Create />
+    const handleSendMail = () => {
+        try {
+            sendMail(selectedIds)
+        } catch (error) {
             
-            <Update 
-                open={open}
-                handleClose={handleClose}
-                handleSubmit={handleSubmit}
-                name={name}
-                phoneNumber={phoneNumber}
-                email={email}
-                hobbies={hobbies}
+        }
+    }
 
-                setName={setName}
-                setEmail={setEmail}
-                setPhoneNumber={setPhoneNumber}
-                setHobbies={setHobbies}
-            />
+    return (
+        <Box
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: '5rem'
+            }}
+        >
+            <Stack spacing={2}>
+                <Box>
+                    <Create />
+                </Box>
 
-            <Button variant='contained' sx={{marginY: '1rem'}} onClick={() => sendMail(selectedIds)}>
-                Send Selected row to info@redpositive.in
-            </Button>
-            <Read openUpdateModal={openUpdateModal} handleSelectCheck={handleSelectCheck} />
-        </>
+                <hr />
+                
+                <Update 
+                    open={open}
+                    handleClose={handleClose}
+                    handleSubmit={handleSubmit}
+                    name={name}
+                    phoneNumber={phoneNumber}
+                    email={email}
+                    hobbies={hobbies}
+
+                    setName={setName}
+                    setEmail={setEmail}
+                    setPhoneNumber={setPhoneNumber}
+                    setHobbies={setHobbies}
+                />
+
+                <Box>
+                    <Typography sx={{ fontSize: '1rem'}}>
+                        Check to send the selected row/rows to  
+                        <a href="mailto:info@redpositive.in" style={{ marginLeft: '6px'}}>info@redpositive.in</a>
+                        <Button 
+                            variant='contained' 
+                            sx={{marginY: '1rem', marginLeft: '15rem'}} 
+                            onClick={handleSendMail}
+                            disabled={selectedIds.length === 0}
+                        >
+                        Send
+                        </Button>
+                    </Typography>
+                </Box>
+                
+                <Box>
+                    <Read openUpdateModal={openUpdateModal} handleSelectCheck={handleSelectCheck} />
+                </Box>
+            </Stack>
+        </Box>
     );
 }

@@ -56,8 +56,8 @@ export default function Create() {
 
     return (
         <Box>
-            <Typography sx={{ fontSize: '3rem'}}>
-            CLICK TO ADD AN ENTRY TO OUR TABLE  
+            <Typography sx={{ fontSize: '2rem'}}>
+            Welcome, add NEW data here! 
                 <Button variant="contained" onClick={handleClickOpen} sx={{
                     width: '5rem',
                     height: '5rem',
@@ -116,8 +116,8 @@ export default function Create() {
                             />
                         </Box>
                         <Box className="form-item">
-                            <Button className="form-button" type="submit" variant="contained" color="primary" sx={{ paddingX: '4rem', paddingY: '0.5rem', fontSize:'1rem'}}>
-                                ADD ENTRY
+                            <Button className="form-button" type="submit" variant="contained" color="primary" sx={{ paddingX: '5rem', paddingY: '0.5rem', fontSize:'1rem'}}>
+                                SAVE
                             </Button>
                         </Box>
                     </form>
