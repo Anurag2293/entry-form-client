@@ -13,9 +13,28 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import EntryContext from '../context/entries/entryContext';
+import AlertContext from '../context/alerts/alertContext';
 
 const Read = (props) => {
     const { entries, deleteEntry } = useContext(EntryContext)
+    const { setAlertState } = useContext(AlertContext)
+
+    const handleDeleteClick = (id) => {
+        try {
+            deleteEntry(id)
+            setAlertState({
+                openAlert: true,
+                severity: "warning",
+                alertText: "The record was deleted"
+            })
+        } catch (error) {
+            setAlertState({
+                openAlert: true,
+                severity: "error",
+                alertText: error.message
+            })
+        }
+    }
 
     return (
         <>
@@ -58,7 +77,7 @@ const Read = (props) => {
                                 <TableCell align="center">{entry.email}</TableCell>
                                 <TableCell align="center">{entry.hobbies}</TableCell>
                                 <TableCell align="center"><EditIcon onClick={() => {props.openUpdateModal(entry)}}/></TableCell>
-                                <TableCell align="center"><DeleteIcon onClick={() => {deleteEntry(entry._id)}}/></TableCell>
+                                <TableCell align="center"><DeleteIcon onClick={() => {handleDeleteClick(entry._id)}}/></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

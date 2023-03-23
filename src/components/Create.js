@@ -31,7 +31,7 @@ export default function Create() {
         setOpen(false);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         const newEntry = {
@@ -42,7 +42,7 @@ export default function Create() {
         };
 
         try {
-            createEntry(newEntry)
+            await createEntry(newEntry)
 
             setName("")
             setPhoneNumber("")

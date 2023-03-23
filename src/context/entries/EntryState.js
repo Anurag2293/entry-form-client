@@ -2,7 +2,7 @@ import { useState } from "react";
 import EntryContext from "./entryContext";
 
 const EntryState = (props) => {
-    const host = 'http://localhost:5000'
+    const host = 'https://entry-form-server.azurewebsites.net'
 
     let initialEntries = []
     const [entries, setEntries] = useState(initialEntries)
